@@ -1,6 +1,47 @@
 # lxc-zabbix
 How To Install Zabbix In LXC Container
 
+# Initial Config
+
+```
+sudo nano config.yml
+```
+
+```
+config: {}
+networks:
+- config:
+    ipv4.address: auto
+    ipv6.address: auto
+  description: ""
+  name: lxdbr0
+  type: ""
+storage_pools:
+- config:
+    size: 20GB
+  description: ""
+  name: default
+  driver: zfs
+profiles:
+- config: {}
+  description: ""
+  devices:
+    eth0:
+      name: eth0
+      network: lxdbr0
+      type: nic
+    root:
+      path: /
+      pool: default
+      type: disk
+  name: default
+cluster: null
+```
+
+```
+sudo lxd init --preseed < config.yml
+```
+
 ```
 lxc launch ubuntu:20.04 zabbix
 lxc launch ubuntu:20.04 proxy
